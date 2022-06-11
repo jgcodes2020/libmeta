@@ -88,6 +88,9 @@ namespace meta {
           std::make_index_sequence<sizeof...(Ss)>,
           basic_string_sequence<T, Ss...>> {}))::value;
   };
+  
+  template <size_t I, class SS>
+  inline constexpr decltype(auto) string_sequence_element_v = string_sequence_element<I, SS>::value;
 }  // namespace meta
 
 #endif

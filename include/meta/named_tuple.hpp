@@ -163,6 +163,9 @@ namespace meta {
   }
 }  // namespace meta
 
+// Structured binding implementation (get by index, size)
+// ======================================================
+
 namespace std {
   template <meta::fixed_string... Ks, class... Ts>
   struct tuple_size<meta::ntuple<meta::nt_arg<Ks, Ts>...>> :
@@ -177,22 +180,22 @@ namespace std {
   
   template <size_t I, meta::fixed_string... Ks, class... Ts>
   tuple_element_t<I, meta::ntuple<meta::nt_arg<Ks, Ts>...>>& get(meta::ntuple<meta::nt_arg<Ks, Ts>...>& tuple) {
-    constexpr decltype(auto) key = meta::string_sequence_element<I, meta::string_sequence<Ks...>>::value;
+    constexpr decltype(auto) key = meta::string_sequence_element_v<I, meta::string_sequence<Ks...>>;
     return meta::get<key>(tuple);
   }
   template <size_t I, meta::fixed_string... Ks, class... Ts>
   const tuple_element_t<I, meta::ntuple<meta::nt_arg<Ks, Ts>...>>& get(const meta::ntuple<meta::nt_arg<Ks, Ts>...>& tuple) {
-    constexpr decltype(auto) key = meta::string_sequence_element<I, meta::string_sequence<Ks...>>::value;
+    constexpr decltype(auto) key = meta::string_sequence_element_v<I, meta::string_sequence<Ks...>>;
     return meta::get<key>(tuple);
   }
   template <size_t I, meta::fixed_string... Ks, class... Ts>
   tuple_element_t<I, meta::ntuple<meta::nt_arg<Ks, Ts>...>>&& get(meta::ntuple<meta::nt_arg<Ks, Ts>...>&& tuple) {
-    constexpr decltype(auto) key = meta::string_sequence_element<I, meta::string_sequence<Ks...>>::value;
+    constexpr decltype(auto) key = meta::string_sequence_element_v<I, meta::string_sequence<Ks...>>;
     return meta::get<key>(tuple);
   }
   template <size_t I, meta::fixed_string... Ks, class... Ts>
   const tuple_element_t<I, meta::ntuple<meta::nt_arg<Ks, Ts>...>>&& get(const meta::ntuple<meta::nt_arg<Ks, Ts>...>&& tuple) {
-    constexpr decltype(auto) key = meta::string_sequence_element<I, meta::string_sequence<Ks...>>::value;
+    constexpr decltype(auto) key = meta::string_sequence_element_v<I, meta::string_sequence<Ks...>>;
     return meta::get<key>(tuple);
   }
 }  // namespace std
