@@ -518,6 +518,7 @@ template <typename TChar, typename TTraits, size_t N>
 template <typename TChar, size_t N>
 basic_fixed_string(const TChar (&)[N]) -> basic_fixed_string<TChar, N - 1>;
 
+#if 1
 // Early GCC versions that support cNTTP were not able to deduce size_t parameter
 // of basic_fixed_string when fixed_string and other typedef were just type aliases.
 // That's why the following code is written in this way.
@@ -562,6 +563,25 @@ struct fixed_wstring : basic_fixed_string<wchar_t, N>
 };
 template <std::size_t N>
 fixed_wstring(const wchar_t (&)[N]) -> fixed_wstring<N - 1>;
+#else
+template <std::size_t N>
+using fixed_string = basic_fixed_string<char, N>;
+
+template <size_t N>
+using fixed_wstring = basic_fixed_string<wchar_t, N>;
+
+#if FIXSTR_CPP20_CHAR8T_PRESENT
+template <size_t N>
+using fixed_u8string = basic_fixed_string<char8_t, N>;
+#endif
+
+template <size_t N>
+using fixed_u16string = basic_fixed_string<char16_t, N>;
+
+template <size_t N>
+using fixed_u32string = basic_fixed_string<char32_t, N>;
+#endif
+
 
 template <typename TChar, size_t N, size_t M, typename TTraits>
 constexpr basic_fixed_string<TChar, N + M, TTraits> operator+(const basic_fixed_string<TChar, N, TTraits>& lhs, const basic_fixed_string<TChar, M, TTraits>& rhs)
@@ -616,7 +636,7 @@ std::basic_ostream<TChar, TTraits>& operator<<(std::basic_ostream<TChar, TTraits
     return out;
 }
 
-} // namespace fixstr
+} // namespace meta
 
 // hash support
 namespace std
